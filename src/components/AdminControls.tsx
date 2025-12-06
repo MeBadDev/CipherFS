@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface AdminControlsProps {
   isAdmin: boolean;
   onShowAuth: () => void;

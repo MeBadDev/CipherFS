@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface AdminAuthDialogProps {
   isOpen: boolean;
   onClose: () => void;
