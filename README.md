@@ -1,5 +1,5 @@
 # CipherFS
-A 'file system' that uses Github as encrypted storage. Built with React and TailwindCSS.
+A 'file server' that uses Github as encrypted storage. Built with React and TailwindCSS.
 
 ## Demo
 [The demo repo](https://github.com/MeBadDev/CipherFS-demo)
