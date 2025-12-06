@@ -1,73 +1,18 @@
-# React + TypeScript + Vite
+# CipherFS
+A 'file system' that uses Github as encrypted storage. Built with React and TailwindCSS.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Background
+Read more about the motivation and design of CipherFS in my [blog post](https://mebaddev.net/#/blogs)!
+(if you're here early, the blog post might not be ready yet, check back later :)
+## How it works
+CipherFS uses public Github repositories to store encrypted files. A single repository can contain multiple 'groups' of resources, including files and links. Each group is encrypted with a passphrase provided by the user.
 
-Currently, two official plugins are available:
+When you provide the correct passphrase, CipherFS decrypts the groups and allows you to access the files and links within them. Files can be downloaded directly, while links open in a new tab.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+That's basically it, it's supposed to be simple but took way too long to build :D
 
-## React Compiler
-
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Features
+- **Multiple Groups**: Organize your resources into different groups, each with its own passphrase!
+- **Cool vibe**: I tried my best to make it look nice!
+- **Upload anywhere**: Admin (repository owner) can upload files from any device with internet access, with PAT!
+- **Open Source**: The entire project is open source! Well, you know that already since you're reading this :)
