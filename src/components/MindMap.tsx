@@ -84,6 +84,52 @@ export function MindMap({
   const [scale, setScale] = useState(1);
   const [isDragging, setIsDragging] = useState(false);
   const lastMousePos = useRef({ x: 0, y: 0 });
+  const lastTouchPos = useRef<{ x: number; y: number } | null>(null);
+  const lastTouchDistance = useRef<number | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const target = e.target as HTMLElement;
+    if (target.tagName === 'INPUT' || target.tagName === 'BUTTON' || target.closest('button') || target.closest('input')) {
+      return;
+    }
+
+    if (e.touches.length === 1) {
+      setIsDragging(true);
+      lastTouchPos.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    } else if (e.touches.length === 2) {
+      const touch1 = e.touches[0];
+      const touch2 = e.touches[1];
+      const distance = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
+      lastTouchDistance.current = distance;
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+
+    if (e.touches.length === 1 && isDragging && lastTouchPos.current) {
+      const deltaX = e.touches[0].clientX - lastTouchPos.current.x;
+      const deltaY = e.touches[0].clientY - lastTouchPos.current.y;
+      
+      setPan(prev => ({ x: prev.x + deltaX, y: prev.y + deltaY }));
+      lastTouchPos.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    } else if (e.touches.length === 2 && lastTouchDistance.current) {
+      const touch1 = e.touches[0];
+      const touch2 = e.touches[1];
+      const distance = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
+      
+      const delta = distance - lastTouchDistance.current;
+      const zoomFactor = delta * 0.005; // Adjust sensitivity
+      
+      setScale(s => Math.min(3, Math.max(0.1, s + zoomFactor)));
+      lastTouchDistance.current = distance;
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+    lastTouchPos.current = null;
+    lastTouchDistance.current = null;
+  };
 
   const handleMouseDown = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
@@ -296,11 +342,14 @@ export function MindMap({
   return (
     <div 
       ref={containerRef} 
-      className={`fixed inset-0 overflow-hidden ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+      className={`fixed inset-0 overflow-hidden touch-none ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
     >
       <div 
         className={`absolute inset-0 w-full h-full origin-center ${!isDragging ? 'transition-transform duration-500 ease-out' : ''}`}

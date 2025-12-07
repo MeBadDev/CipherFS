@@ -12,6 +12,10 @@ interface SidebarProps {
   onDeleteItem?: (groupId: string, itemId: string) => void;
   isCollapsed: boolean;
   onToggleCollapse: () => void;
+  passphrase?: string;
+  onPassphraseChange?: (passphrase: string) => void;
+  onPassphraseSubmit?: () => void;
+  isDecrypting?: boolean;
 }
 
 export function Sidebar({ 
@@ -25,7 +29,11 @@ export function Sidebar({
   isAdmin, 
   onDeleteItem,
   isCollapsed,
-  onToggleCollapse
+  onToggleCollapse,
+  passphrase,
+  onPassphraseChange,
+  onPassphraseSubmit,
+  isDecrypting
 }: SidebarProps) {
   const getItemIcon = (type: GroupItem['type']) => {
     switch (type) {
@@ -51,7 +59,7 @@ export function Sidebar({
       <button
         onClick={onToggleCollapse}
         className={`fixed top-4 z-50 p-2 bg-slate-800 border border-slate-700 text-slate-400 hover:text-white transition-all duration-300 ${
-          isCollapsed ? 'left-4' : 'left-80'
+          isCollapsed ? 'left-4' : 'left-4 sm:left-80'
         }`}
       >
         {isCollapsed ? '>' : '<'}
@@ -59,12 +67,12 @@ export function Sidebar({
 
       {/* Sidebar Container */}
       <div 
-        className={`fixed left-0 top-0 bottom-0 w-80 bg-slate-900/95 backdrop-blur border-r border-slate-800 transition-transform duration-300 z-40 flex flex-col ${
+        className={`fixed left-0 top-0 bottom-0 w-full sm:w-80 bg-slate-900/95 backdrop-blur border-r border-slate-800 transition-transform duration-300 z-40 flex flex-col ${
           isCollapsed ? '-translate-x-full' : 'translate-x-0'
         }`}
       >
         {/* Header */}
-        <div className="p-6 border-b border-slate-800">
+        <div className="p-6 pt-16 sm:pt-6 border-b border-slate-800">
           <h2 
             className="text-xl font-bold text-white cursor-pointer hover:text-blue-400 transition-colors truncate"
             onClick={() => onSelectGroup(null)} // Select Main Node
@@ -82,9 +90,33 @@ export function Sidebar({
           {selectedGroupId === null && (
             <div className="animate-fadeIn">
               <div className="text-xs font-mono text-slate-500 mb-2 uppercase tracking-wider">Root</div>
-              <div className="p-3 bg-slate-800/50 border border-slate-700 rounded">
-                <p className="text-sm text-slate-300">
-                  Select a group to view its contents or decrypt it.
+              
+              <div className="p-4 bg-slate-800/50 border border-slate-700 rounded mb-6 md:hidden">
+                <p className="text-sm text-slate-300 mb-3">
+                  Enter passphrase to decrypt groups:
+                </p>
+                <div className="flex gap-2">
+                  <input
+                    type="password"
+                    value={passphrase || ''}
+                    onChange={(e) => onPassphraseChange?.(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && onPassphraseSubmit?.()}
+                    placeholder="Passphrase..."
+                    className="flex-1 bg-slate-900 border border-slate-600 text-white px-3 py-1.5 text-sm rounded focus:outline-none focus:border-blue-500"
+                  />
+                  <button
+                    onClick={onPassphraseSubmit}
+                    disabled={isDecrypting || !passphrase}
+                    className="bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white px-3 py-1.5 text-sm rounded transition-colors"
+                  >
+                    {isDecrypting ? '...' : 'Go'}
+                  </button>
+                </div>
+              </div>
+
+              <div className="hidden md:block">
+                <p className="text-sm text-slate-300 mb-3">
+                  Enter passphrase in the Root Node to decrypt groups.
                 </p>
               </div>
               

@@ -106,13 +106,22 @@ function App() {
             groups={repoIndex.groups}
             decryptedGroups={decryptedGroups}
             selectedGroupId={selectedGroupId}
-            onSelectGroup={setSelectedGroupId}
+            onSelectGroup={(id) => {
+              setSelectedGroupId(id);
+              if (window.innerWidth < 640) {
+                setIsSidebarCollapsed(true);
+              }
+            }}
             onDownloadItem={handleItemActivation}
             isAdmin={isAdmin}
             onDeleteItem={handleDeleteItem}
             onFocusNode={setFocusedNodeId}
             isCollapsed={isSidebarCollapsed}
             onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+            passphrase={currentPassphrase}
+            onPassphraseChange={setCurrentPassphrase}
+            onPassphraseSubmit={handlePassphraseSubmit}
+            isDecrypting={Object.values(decryptionStatus).some(s => s === 'decrypting')}
           />
 
           <MindMap

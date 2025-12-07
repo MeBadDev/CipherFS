@@ -150,8 +150,8 @@ export function AdminPanel({ groups, onCreateGroup, onDeleteGroup, onAddItem, on
                     key={group.id}
                     className="flex items-center justify-between p-3 bg-slate-800 border border-slate-600 hover:border-slate-500 transition-colors"
                   >
-                    <div>
-                      <div className="font-medium text-white">{group.name}</div>
+                    <div className="flex-1 min-w-0 mr-4">
+                      <div className="font-medium text-white truncate">{group.name}</div>
                       <div className="text-xs text-slate-400">
                         Created {new Date(group.created).toLocaleDateString()}
                       </div>
