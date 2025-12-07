@@ -5,8 +5,7 @@ A 'file server' that uses Github as encrypted storage. Built with React and Tail
 [The demo repo](https://github.com/MeBadDev/CipherFS-demo)
 
 ## Background
-Read more about the motivation and design of CipherFS in my [blog post](https://mebaddev.net/#/blogs)!
-(if you're here early, the blog post might not be ready yet, check back later :)
+Read more about the motivation and design of CipherFS in my [blog post](https://mebaddev.net/blog/introducting-cipherfs)
 ## How it works
 CipherFS uses public Github repositories to store encrypted files. A single repository can contain multiple 'groups' of resources, including files and links. Each group is encrypted with a passphrase provided by the user.
 
